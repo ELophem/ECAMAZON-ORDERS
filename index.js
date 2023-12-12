@@ -18,7 +18,23 @@ const pool = mysql.createPool({
   password: 'root', // Replace with your MySQL password
   database: 'ecamazon' // Replace with your MySQL database name
 });
-
+pool.query(
+  `CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id VARCHAR(255) NOT NULL,
+    articles TEXT,
+    amount DECIMAL(10, 2),
+    client_name VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`,
+  (err) => {
+    if (err) {
+      console.error('Error creating orders table: ', err);
+    } else {
+      console.log('Orders table created or already exists');
+    }
+  }
+);
 // Route to handle storing orders
 orderRoutes.post('/storeOrder', (req, res) => {
   const { orderId, articles, amount, clientName } = req.body;
