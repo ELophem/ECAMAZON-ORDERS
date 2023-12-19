@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop-back
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shop-backend
+  template:
+    metadata:
+      labels:
+        app: shop-backend
+    spec:
+      containers:
+      - name: api-container
+        image: dorianp29/ecamazan-orders
+        ports:
+        - containerPort: 8080  # Replace with the port your API listens on
+
+      - name: db-container
+        image: dorianp29/ecamazan-db
+        ports:
+        - containerPort: 3306  # Replace with the port your DB listens on
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop-backend-service
+spec:
+  selector:
+    app: shop-backend
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080  # Port exposed by the Service
+      targetPort: 8080  # Port used by the API container in the Pod
+      nodePort: 30004  # Expose on a specific port on all nodes
