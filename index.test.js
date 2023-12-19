@@ -1,10 +1,9 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const { expect } = chai;
-const app = require('./index'); // Importez votre fichier index.js ou ajustez le chemin si nécessaire
+const app = require('./index');
 
 chai.use(chaiHttp);
-
 
 describe('API endpoints', () => {
   it('should store an order', (done) => {
@@ -17,9 +16,11 @@ describe('API endpoints', () => {
         clientName: 'John Doe'
       })
       .end((err, res) => {
+        if (err) return done(err); // Handle error if request fails
+
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('message').equal('Order stored successfully');
-        done();
+        done(); // Call done() after assertions are completed
       });
   });
 
@@ -27,9 +28,11 @@ describe('API endpoints', () => {
     chai.request(app)
       .delete('/api/orders/deleteOrder/12345') // Replace '12345' with an existing order ID for testing
       .end((err, res) => {
+        if (err) return done(err); // Handle error if request fails
+
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('message').equal('Order deleted successfully');
-        done();
+        done(); // Call done() after assertions are completed
       });
   });
 
@@ -37,10 +40,12 @@ describe('API endpoints', () => {
     chai.request(app)
       .get('/api/orders/orders')
       .end((err, res) => {
+        if (err) return done(err); // Handle error if request fails
+
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('array');
         // Add more assertions based on your expected data structure
-        done();
+        done(); // Call done() after assertions are completed
       });
   });
 });
