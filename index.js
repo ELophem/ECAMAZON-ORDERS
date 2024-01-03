@@ -13,10 +13,10 @@ app.use(cors());
 // Create a MySQL connection pool
 const pool = mysql.createPool({
   connectionLimit: 10,
-  host: 'localhost', // Replace with your MySQL host
-  user: 'root', // Replace with your MySQL username
-  password: 'root', // Replace with your MySQL password
-  database: 'ecamazon' // Replace with your MySQL database name
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'root',
+  database: process.env.DB_NAME || 'ecamazon'
 });
 pool.query(
   `CREATE TABLE IF NOT EXISTS orders (
