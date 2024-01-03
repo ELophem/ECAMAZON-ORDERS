@@ -9,7 +9,7 @@ describe('API endpoints', () => {
   let server;
 
   before((done) => {
-    // Start the server before running tests
+
     server = app.listen(0, () => {
       console.log('Server started');
       done();
@@ -34,7 +34,7 @@ describe('API endpoints', () => {
 
   it('should delete an order by order_id', (done) => {
     chai.request(app)
-      .delete('/api/orders/deleteOrder/12345') // Replace '12345' with an existing order ID for testing
+      .delete('/api/orders/deleteOrder/12345') 
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('message').equal('Order deleted successfully');
@@ -48,16 +48,22 @@ describe('API endpoints', () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('array');
-        // Add more assertions based on your expected data structure
+  
         done();
       });
   });
 
   after((done) => {
-    // Close the server after all tests are done
-    server.close(() => {
-      console.log('Server closed');
+
+    if (server) {
+      server.close(() => {
+        console.log('Server closed');
+        done();
+      });
+    } else {
+      console.log('Server was not started or already closed');
       done();
-    });
+    }
+    process.exit(0); 
   });
 });
