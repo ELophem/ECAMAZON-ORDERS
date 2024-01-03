@@ -10,10 +10,10 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: ecamazon
-          MYSQL_USER: testuser
-          MYSQL_PASSWORD: testpassword
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -44,8 +44,8 @@ jobs:
         run: |
           echo "DB_HOST=localhost" >> $GITHUB_ENV
           echo "DB_PORT=3306" >> $GITHUB_ENV
-          echo "DB_USER=testuser" >> $GITHUB_ENV
-          echo "DB_PASSWORD=testpassword" >> $GITHUB_ENV
+          echo "DB_USER=root" >> $GITHUB_ENV
+          echo "DB_PASSWORD=root" >> $GITHUB_ENV
           echo "DB_DATABASE=ecamazon" >> $GITHUB_ENV
 
       - name: Install dependencies
@@ -56,6 +56,6 @@ jobs:
         env:
           DB_HOST: localhost
           DB_PORT: 3306
-          DB_USER: testuser
-          DB_PASSWORD: testpassword
+          DB_USER: root
+          DB_PASSWORD: root
           DB_DATABASE: ecamazon
