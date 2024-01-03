@@ -13,7 +13,7 @@ app.use(cors());
 // Create a MySQL connection pool
 const pool = mysql.createPool({
   connectionLimit: 10,
-  host: 'conteneur4', // Replace with your MySQL host
+  host: 'localhost', // Replace with your MySQL host
   user: 'root', // Replace with your MySQL username
   password: 'root', // Replace with your MySQL password
   database: 'ecamazon' // Replace with your MySQL database name
@@ -97,7 +97,7 @@ orderRoutes.get('/orders', (req, res) => {
 app.use('/api/orders', orderRoutes);
 
 // Start the server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

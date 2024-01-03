@@ -6,6 +6,16 @@ const app = require('./index');
 chai.use(chaiHttp);
 
 describe('API endpoints', () => {
+  let server;
+
+  before((done) => {
+    // Start the server before running tests
+    server = app.listen(0, () => {
+      console.log('Server started');
+      done();
+    });
+  });
+
   it('should store an order', (done) => {
     chai.request(app)
       .post('/api/orders/storeOrder')
@@ -16,11 +26,9 @@ describe('API endpoints', () => {
         clientName: 'John Doe'
       })
       .end((err, res) => {
-        if (err) return done(err); // Handle error if request fails
-
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('message').equal('Order stored successfully');
-        done(); // Call done() after assertions are completed
+        done();
       });
   });
 
@@ -28,11 +36,9 @@ describe('API endpoints', () => {
     chai.request(app)
       .delete('/api/orders/deleteOrder/12345') // Replace '12345' with an existing order ID for testing
       .end((err, res) => {
-        if (err) return done(err); // Handle error if request fails
-
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('message').equal('Order deleted successfully');
-        done(); // Call done() after assertions are completed
+        done();
       });
   });
 
@@ -40,12 +46,18 @@ describe('API endpoints', () => {
     chai.request(app)
       .get('/api/orders/orders')
       .end((err, res) => {
-        if (err) return done(err); // Handle error if request fails
-
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('array');
         // Add more assertions based on your expected data structure
-        done(); // Call done() after assertions are completed
+        done();
       });
+  });
+
+  after((done) => {
+    // Close the server after all tests are done
+    server.close(() => {
+      console.log('Server closed');
+      done();
+    });
   });
 });
